@@ -17,6 +17,11 @@ class Thread(threading.Thread):
 
 def pick_up(chop1, chop2):
     print("test")
+    #chop1.acquire()
+    #print(chop1._value)
+    #chop1.release()
+    #print(chop1._value)
+    #wenn Fehlschlag, muss Thread auf wait gesetzt werden
 
 
 def main():
@@ -40,29 +45,14 @@ def main():
     while True:
         time.sleep(random.randint(1, 3))
         current_p = random.choice(philosophers)
-        print(current_p.thread_name)
         '''
         if a philosopher is hungry, he*she tries to pick up the two adjacent chopsticks
         '''
         if situations.get(current_p) == states[0]:
+            print(current_p.thread_name + " is hungry")
+            #change state to 1 -> hungry
             pick_up(chopsticks[i], chopsticks[(i + 1) % n])
 
 
-# T = threading.Timer (Delay Duration, function, args = None, kwargs = None)
-
 if __name__ == '__main__':
     main()
-
-    # anfangs alle in denkend versetzen
-    # while true -> jedes mal ein time Objekt verstreichen lassen (random)
-    # wenn verstrichen, agiert jedes mal random ein philo
-
-    # sem = threading.Semaphore()
-    # obj.acquire()
-    # obj.release
-
-    # thread1 = Thread("Philo1", 1000)
-    # thread2 = Thread("Philo2", 2000)
-
-    # thread1.start()
-    # thread2.start()
