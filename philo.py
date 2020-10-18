@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 import threading
 import time
-from random import randint
+import random
 
 
 class Thread(threading.Thread):
@@ -12,7 +12,11 @@ class Thread(threading.Thread):
         self.thread_id = thread_id
 
     def run(self):
-            print(str(self.thread_name) + " has joined the table")
+        print(str(self.thread_name) + " has joined the table")
+
+
+def pick_up(chop1, chop2):
+    print("test")
 
 
 def main():
@@ -20,6 +24,7 @@ def main():
     philosophers = []
     chopsticks = []
     states = ["thinking", "hungry", "eating"]
+    situations = {}
 
     '''
     create same amount of philosophers and chopsticks
@@ -27,30 +32,37 @@ def main():
     '''
     for i in range(n):
         chopsticks.append(threading.Semaphore(1))
-        philosophers.append(Thread("Philosopher "+str(i), i))
+        philosophers.append(Thread("Philosopher " + str(i), i))
         philosophers[i].start()
+        situations.update({philosophers[i]: states[0]})
         print("Philosopher " + str(philosophers[i].thread_id) + " is " + states[0])
 
-    #while True:
-     #   print(randint(1, 5))
+    while True:
+        time.sleep(random.randint(1, 3))
+        current_p = random.choice(philosophers)
+        print(current_p.thread_name)
+        '''
+        if a philosopher is hungry, he*she tries to pick up the two adjacent chopsticks
+        '''
+        if situations.get(current_p) == states[0]:
+            pick_up(chopsticks[i], chopsticks[(i + 1) % n])
 
 
-
-#T = threading.Timer (Delay Duration, function, args = None, kwargs = None)
+# T = threading.Timer (Delay Duration, function, args = None, kwargs = None)
 
 if __name__ == '__main__':
     main()
 
-    #anfangs alle in denkend versetzen
-    #while true -> jedes mal ein time Objekt verstreichen lassen (random)
-    #wenn verstrichen, agiert jedes mal random ein philo
+    # anfangs alle in denkend versetzen
+    # while true -> jedes mal ein time Objekt verstreichen lassen (random)
+    # wenn verstrichen, agiert jedes mal random ein philo
 
-    #sem = threading.Semaphore()
-    #obj.acquire()
-    #obj.release
+    # sem = threading.Semaphore()
+    # obj.acquire()
+    # obj.release
 
-    #thread1 = Thread("Philo1", 1000)
-    #thread2 = Thread("Philo2", 2000)
+    # thread1 = Thread("Philo1", 1000)
+    # thread2 = Thread("Philo2", 2000)
 
-    #thread1.start()
-    #thread2.start()
+    # thread1.start()
+    # thread2.start()
