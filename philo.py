@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 import numpy
-import secrets
 import threading
 import time
 import random
@@ -17,10 +16,8 @@ class Thread(threading.Thread):
 def put_down(chop1, chop2):
     if chop1.locked():
         chop1.release()
-        print("release first")
     if chop2.locked():
         chop2.release()
-        print("release second") #release wird noch nicht vernünftig übernommen, evtl chopsticks-array als objekt definieren und dort eine update-methode einbauen
 
 
 def pick_up(chop1, chop2):
@@ -30,11 +27,6 @@ def pick_up(chop1, chop2):
         return True
     else:
         return False
-        #wenn beide erfolgreich aufgehoben -> state in eating setzen, sonst auf hungry (wait lassen)
-
-    #chop1.release()
-
-    #wenn Fehlschlag, muss Thread auf wait gesetzt werden
 
 
 def main():
@@ -74,7 +66,7 @@ def main():
             else:
                 print(str(current_p.thread_name) + " needs " + str(current_p.thread_id) + " and " + str((current_p.thread_id + 1) % n) + " to eat")
         else:
-            put_down(chopsticks[philosophers[i].thread_id], chopsticks[(philosophers[i].thread_id + 1) % n])
+            put_down(chopsticks[current_p.thread_id], chopsticks[(current_p.thread_id + 1) % n])
             print(str(current_p.thread_name) + " has put down the sticks")
             situations[current_p] = states[0]
 
